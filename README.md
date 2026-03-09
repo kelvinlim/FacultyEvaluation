@@ -1,6 +1,6 @@
-# Faculty Performance Criteria — Excel Generator
+# Faculty Performance Criteria — Excel & PNG Generator
 
-Restructures the Dept of Psychiatry & Behavioral Sciences Faculty Performance Criteria document into formatted, horizontally-aligned Excel spreadsheets with UMN branding (Maroon & Gold).
+Restructures the Dept of Psychiatry & Behavioral Sciences Faculty Performance Criteria document into formatted, horizontally-aligned Excel spreadsheets and high-resolution PNG table images with UMN branding (Maroon & Gold).
 
 The output covers **5 mission areas** rated on levels 1–4:
 
@@ -29,16 +29,22 @@ pip install -r requirements.txt
 ## Usage
 
 ```bash
+# Generate Excel spreadsheet
 python build_aligned_criteria.py
+
+# Generate PNG table images (one per mission area)
+python build_table_pngs.py
 ```
 
-This generates `Faculty_Performance_Criteria_Aligned.xlsx`.
+This generates `Faculty_Performance_Criteria_Aligned.xlsx` and 5 PNG files in `png/`.
 
 ## Project Structure
 
 | File | Description |
 |------|-------------|
 | `build_aligned_criteria.py` | Main script — contains all criteria data and Excel formatting logic |
-| `requirements.txt` | Python dependencies (openpyxl, python-docx) |
+| `build_table_pngs.py` | Generates PNG table images using Playwright (headless Chromium) |
+| `requirements.txt` | Python dependencies (openpyxl, python-docx, playwright) |
 | `Faculty_Performance_Criteria_Source_2026-03-01.docx` | Original source document |
-| `Faculty_Performance_Criteria_Aligned.xlsx` | Generated output |
+| `Faculty_Performance_Criteria_Aligned.xlsx` | Generated Excel output |
+| `png/` | Generated PNG table images (one per mission area, 2x retina resolution) |

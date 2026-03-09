@@ -9,17 +9,22 @@ This project restructures the Dept of Psychiatry & Behavioral Sciences Faculty P
 ## Key Files
 
 - `build_aligned_criteria.py` — Main script that generates the Excel output. Contains all criteria data as Python dicts and all formatting/styling logic using openpyxl. This is the single source of truth for criteria content and spreadsheet layout.
+- `build_table_pngs.py` — Generates PNG table images (one per mission area) using Playwright to render styled HTML tables. Contains its own copy of the criteria data dict to avoid import side-effects.
 - `Faculty_Performance_Criteria_Source_2026-03-01.docx` — Original source document.
 - `Faculty_Performance_Criteria_Aligned.xlsx` — Primary output file (landscape, UMN branding).
+- `png/` — Directory of generated PNG table images (2x retina resolution).
 
 ## Build & Run
 
 ```bash
-# Activate venv (has python-docx and openpyxl installed)
+# Activate venv
 source .venv/bin/activate
 
 # Regenerate the Excel output
 python build_aligned_criteria.py
+
+# Regenerate PNG table images
+python build_table_pngs.py
 ```
 
 ## Architecture
