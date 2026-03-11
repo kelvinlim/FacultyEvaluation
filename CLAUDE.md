@@ -8,8 +8,10 @@ This project restructures the Dept of Psychiatry & Behavioral Sciences Faculty P
 
 ## Key Files
 
-- `build_aligned_criteria.py` — Main script that generates the Excel output. Contains all criteria data as Python dicts and all formatting/styling logic using openpyxl. This is the single source of truth for criteria content and spreadsheet layout.
-- `build_table_pngs.py` — Generates PNG table images (one per mission area) using Playwright to render styled HTML tables. Contains its own copy of the criteria data dict to avoid import side-effects.
+- `criteria_tables.yaml` — Single source of truth for all mission criteria content.
+- `criteria_data.py` — Shared loader/validator that reads YAML and returns the normalized table structure expected by generators.
+- `build_aligned_criteria.py` — Main script that generates the Excel output. Contains formatting/styling logic using openpyxl.
+- `build_table_pngs.py` — Generates PNG table images (one per mission area) using Playwright to render styled HTML tables.
 - `Faculty_Performance_Criteria_Source_2026-03-01.docx` — Original source document.
 - `Faculty_Performance_Criteria_Aligned.xlsx` — Primary output file (landscape, UMN branding).
 - `png/` — Directory of generated PNG table images (2x retina resolution).
@@ -19,6 +21,9 @@ This project restructures the Dept of Psychiatry & Behavioral Sciences Faculty P
 ```bash
 # Activate venv
 source .venv/bin/activate
+
+# Validate criteria YAML structure only
+python validate_criteria.py
 
 # Regenerate the Excel output
 python build_aligned_criteria.py
@@ -31,11 +36,12 @@ python build_table_pngs.py
 
 `build_aligned_criteria.py` is structured as:
 1. **Style definitions** — UMN brand colors (Maroon #7A0019, Gold #FFCC33), fonts, borders, fills for headers/zebra striping/promotion rows/separators.
-2. **Data dict (`tables`)** — Each mission area has a `note` and `groups`. Groups separate "Core" vs "Scholarship/Leadership/Promotion" criteria with a visual separator row. Each row is `(criterion_name, [level_1, level_2, level_3, level_4], is_promotion_relevant)`.
-3. **Sheet generation loop** — Iterates over tables, creates one sheet per mission area with page setup (landscape, letter, fit-to-width, repeating headers), separator rows between groups, zebra striping, and promotion-row highlighting in gold.
+2. **Shared criteria data (`criteria_tables.yaml`)** — Each mission area has a `note` and `groups`. Groups separate "Core" vs "Scholarship/Leadership/Promotion" criteria with a visual separator row. Each row has `criterion`, `levels` (4 values), and `promotion_relevant`.
+3. **Shared loader/validator (`criteria_data.py`)** — Validates YAML shape and normalizes it to the tuple structure expected by the generators.
+4. **Sheet/image generation loops** — Excel and PNG scripts iterate over the same loaded tables so editorial updates happen in one place only.
 
 ## Design Decisions
 
-- All criteria text lives inline in the Python dict, not parsed from the .docx at runtime. This allows editorial control over wording and horizontal alignment across rating levels.
+- All criteria text lives in `criteria_tables.yaml`, not parsed from the .docx at runtime. This allows editorial control over wording and horizontal alignment across rating levels while keeping a single source for Excel and PNG outputs.
 - Promotion-relevant rows (`is_promotion_relevant=True`) get gold highlighting and dark maroon bold text.
 - Page setup uses `fitToHeight=0` to allow multi-page flow with repeating header rows rather than shrinking fonts to force single-page fit.
