@@ -16,6 +16,7 @@ The output covers **5 mission areas** rated on levels 1–4:
 - UMN brand colors (Maroon `#7A0019`, Gold `#FFCC33`)
 - Color-coded rating columns and zebra-striped rows in Excel output
 - PNG output uses non-zebra body rows and pale-gold highlight for promotion-relevant criteria
+- PowerPoint output can place one PNG table per slide for presentation review
 - Separator rows between core duties and scholarship/leadership/promotion criteria
 
 ## Setup
@@ -37,9 +38,12 @@ python build_aligned_criteria.py
 
 # Generate PNG table images (one per mission area)
 python build_table_pngs.py
+
+# Generate PowerPoint with one PNG table per slide
+python build_png_powerpoint.py
 ```
 
-This generates `Faculty_Performance_Criteria_Aligned.xlsx` and 5 PNG files in `png/`.
+This generates `Faculty_Performance_Criteria_Aligned.xlsx`, 5 PNG files in `png/`, and `Faculty_Performance_Criteria_PNGs.pptx`.
 
 ## Criteria Workflow
 
@@ -47,6 +51,7 @@ All criteria content is authored in `criteria_tables.yaml`.
 
 - `build_aligned_criteria.py` loads criteria through `criteria_data.py` and generates the Excel workbook.
 - `build_table_pngs.py` loads the same criteria source and generates PNG tables.
+- `build_png_powerpoint.py` places the generated PNG tables into a PowerPoint presentation with one slide per mission area.
 - `validate_criteria.py` validates the YAML structure only (no output generation).
 
 ### YAML Schema (per mission area)
@@ -89,12 +94,14 @@ Recommended update flow:
 2. Run `python validate_criteria.py`.
 3. Run `python build_aligned_criteria.py`.
 4. Run `python build_table_pngs.py`.
-5. Review generated workbook and PNGs.
+5. Run `python build_png_powerpoint.py`.
+6. Review generated workbook, PNGs, and PowerPoint.
 
 ## Outputs
 
 - Excel output: `Faculty_Performance_Criteria_Aligned.xlsx` (written to the repository root)
 - PNG outputs: files in `png/` (one image per mission area)
+- PowerPoint output: `Faculty_Performance_Criteria_PNGs.pptx` (written to the repository root)
 
 ## Project Structure
 
@@ -104,7 +111,8 @@ Recommended update flow:
 | `criteria_data.py` | Shared loader + validation for criteria YAML consumed by both generators |
 | `build_aligned_criteria.py` | Main Excel generator and formatting logic |
 | `build_table_pngs.py` | PNG table image generator using Playwright (headless Chromium) |
-| `requirements.txt` | Python dependencies (openpyxl, playwright, PyYAML, python-docx) |
+| `build_png_powerpoint.py` | PowerPoint generator that places each PNG table on its own slide |
+| `requirements.txt` | Python dependencies (openpyxl, playwright, PyYAML, python-docx, python-pptx) |
 | `Faculty_Performance_Criteria_Source_2026-03-01.docx` | Original source document |
 | `Faculty_Performance_Criteria_Aligned.xlsx` | Generated Excel output |
 | `png/` | Generated PNG table images (one per mission area, 2x retina resolution) |
