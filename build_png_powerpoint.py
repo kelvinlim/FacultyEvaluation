@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 """Build a PowerPoint presentation with one generated PNG table per slide."""
 
 from pathlib import Path

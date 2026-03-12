@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 """
 Generate a PNG table image for each of the 5 mission areas.
 Uses Playwright (headless Chromium) to render styled HTML tables.

@@ -19,7 +19,7 @@ Clinical:
       promotion_relevant: true
     - criterion: Clinical Availability
       levels:
-      - Unavailable for assigned duties; frequently cancels clinic or does not meet expected days/hours
+      - Unavailable for assigned duties; frequently cancels clinic or does not meet expected days/hours; refuses patients despite open slots; overly rigid patient population criteria
       - Maintains reliable schedule; reschedules for cancellations; willing to provide inpatient coverage as required
       - Makes themselves available during times of clinical need (outpatient and inpatient)
       - Actively participates during times of clinical need (outpatient and inpatient)

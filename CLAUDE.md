@@ -37,6 +37,8 @@ python build_table_pngs.py
 python build_png_powerpoint.py
 ```
 
+Scripts are executable and can also be run directly (for example, `./build_table_pngs.py`).
+
 ## Architecture
 
 `build_aligned_criteria.py` is structured as:

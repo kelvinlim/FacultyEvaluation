@@ -29,6 +29,8 @@ pip install -r requirements.txt
 
 ## Usage
 
+All generator/validator scripts include a shebang and executable bit, so you can run either `python script.py` or `./script.py`.
+
 ```bash
 # Validate criteria YAML structure only
 python validate_criteria.py

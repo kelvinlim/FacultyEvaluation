@@ -1,3 +1,4 @@
+#! /usr/bin/env python3 
 """
 Restructure Faculty Performance Criteria into horizontally-aligned tables.
 Each row = one criterion topic, columns = rating levels 1-4.

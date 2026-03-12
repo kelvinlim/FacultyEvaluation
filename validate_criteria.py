@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 """Validate criteria_tables.yaml structure without generating outputs."""
 
 from criteria_data import load_tables
