@@ -8,8 +8,10 @@ This project restructures the Dept of Psychiatry & Behavioral Sciences Faculty P
 
 ## Key Files
 
-- `criteria_tables.yaml` — Single source of truth for all mission criteria content.
-- `criteria_data.py` — Shared loader/validator that reads YAML and returns the normalized table structure expected by generators.
+- `criteria_input.xlsx` — User-editable Excel workbook (one sheet per mission area) with Yes/No dropdowns for promotion relevance. Preferred input source.
+- `criteria_tables.yaml` — Original YAML source for all mission criteria content. Used as fallback when the Excel workbook is absent.
+- `criteria_data.py` — Shared loader/validator that reads either Excel or YAML and returns the normalized table structure expected by generators. Auto-detects format (prefers Excel when present).
+- `build_criteria_input.py` — Generates the editable Excel input workbook from YAML (migration/reset tool).
 - `build_aligned_criteria.py` — Main script that generates the Excel output. Contains formatting/styling logic using openpyxl.
 - `build_table_pngs.py` — Generates PNG table images (one per mission area) using Playwright to render styled HTML tables.
 - `build_png_powerpoint.py` — Generates a PowerPoint deck with one PNG table image per slide.
@@ -24,7 +26,11 @@ This project restructures the Dept of Psychiatry & Behavioral Sciences Faculty P
 # Activate venv
 source .venv/bin/activate
 
-# Validate criteria YAML structure only
+# Generate/regenerate the editable input workbook from YAML
+python build_criteria_input.py                     # default: criteria_input.xlsx
+python build_criteria_input.py custom_name.xlsx    # custom filename
+
+# Validate criteria structure (auto-detects Excel or YAML)
 python validate_criteria.py
 
 # Regenerate the Excel output
@@ -43,13 +49,13 @@ Scripts are executable and can also be run directly (for example, `./build_table
 
 `build_aligned_criteria.py` is structured as:
 1. **Style definitions** — UMN brand colors (Maroon #7A0019, Gold #FFCC33), fonts, borders, fills for headers/zebra striping/promotion rows/separators.
-2. **Shared criteria data (`criteria_tables.yaml`)** — Each mission area has a `note` and `groups`. Groups separate "Core" vs "Scholarship/Leadership/Promotion" criteria with a visual separator row. Each row has `criterion`, `levels` (4 values), and `promotion_relevant`.
-3. **Shared loader/validator (`criteria_data.py`)** — Validates YAML shape and normalizes it to the tuple structure expected by the generators.
+2. **Shared criteria data** — Can live in `criteria_input.xlsx` (preferred, user-editable) or `criteria_tables.yaml` (original). Each mission area has a `note` and `groups`. Groups separate "Core" vs "Scholarship/Leadership/Promotion" criteria with a visual separator row. Each row has `criterion`, `levels` (4 values), and `promotion_relevant`.
+3. **Shared loader/validator (`criteria_data.py`)** — Auto-detects Excel or YAML input. Validates structure and normalizes it to the tuple structure expected by the generators.
 4. **Sheet/image generation loops** — Excel, PNG, and PowerPoint scripts iterate over the same loaded tables so editorial updates happen in one place only.
 
 ## Design Decisions
 
-- All criteria text lives in `criteria_tables.yaml`, not parsed from the .docx at runtime. This allows editorial control over wording and horizontal alignment across rating levels while keeping a single source for Excel and PNG outputs.
+- Criteria text can be edited in `criteria_input.xlsx` (user-friendly) or `criteria_tables.yaml`. The loader auto-detects: if the Excel file exists it is used, otherwise YAML. This allows editorial control over wording and horizontal alignment across rating levels while keeping a single source for all outputs.
 - Promotion-relevant rows (`is_promotion_relevant=True`) get gold highlighting and dark maroon bold text.
 - Page setup uses `fitToHeight=0` to allow multi-page flow with repeating header rows rather than shrinking fonts to force single-page fit.
 - The PowerPoint generator expects the PNG outputs to exist and places one mission table per slide for review/presentation use.
