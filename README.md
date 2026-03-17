@@ -43,9 +43,17 @@ python build_table_pngs.py
 
 # Generate PowerPoint with one PNG table per slide
 python build_png_powerpoint.py
+
+# Convert Apple Numbers file to Excel
+python convert_numbers_to_xlsx.py "Clinical criteria_input_SV.numbers"
+python convert_numbers_to_xlsx.py input.numbers -o output.xlsx
+
+# Generate the SV variant PDF (docx cover + table PNGs, portrait, with footers)
+python build_sv_pdf.py
+python build_sv_pdf.py --input other.xlsx --docx other.docx --date "April 1, 2026" --output out.pdf
 ```
 
-This generates `Faculty_Performance_Criteria_Aligned.xlsx`, 5 PNG files in `png/`, and `Faculty_Performance_Criteria_PNGs.pptx`.
+This generates `Faculty_Performance_Criteria_Aligned.xlsx`, 5 PNG files in `png/`, `Faculty_Performance_Criteria_PNGs.pptx`, and `Faculty_Performance_Criteria_SV.pdf`.
 
 ## Criteria Workflow
 
@@ -104,6 +112,8 @@ Recommended update flow:
 - Excel output: `Faculty_Performance_Criteria_Aligned.xlsx` (written to the repository root)
 - PNG outputs: files in `png/` (one image per mission area)
 - PowerPoint output: `Faculty_Performance_Criteria_PNGs.pptx` (written to the repository root)
+- SV PDF output: `Faculty_Performance_Criteria_SV.pdf` (portrait, docx cover + table PNGs with footers)
+- SV PNG outputs: files in `png_SV/` (one image per mission area from SV workbook)
 
 ## Project Structure
 
@@ -114,7 +124,11 @@ Recommended update flow:
 | `build_aligned_criteria.py` | Main Excel generator and formatting logic |
 | `build_table_pngs.py` | PNG table image generator using Playwright (headless Chromium) |
 | `build_png_powerpoint.py` | PowerPoint generator that places each PNG table on its own slide |
-| `requirements.txt` | Python dependencies (openpyxl, playwright, PyYAML, python-docx, python-pptx) |
+| `build_sv_pdf.py` | SV variant PDF generator: docx cover pages + table PNGs in portrait with footers |
+| `convert_numbers_to_xlsx.py` | Apple Numbers to Excel (.xlsx) converter |
+| `requirements.txt` | Python dependencies |
 | `Faculty_Performance_Criteria_Source_2026-03-01.docx` | Original source document |
 | `Faculty_Performance_Criteria_Aligned.xlsx` | Generated Excel output |
+| `Faculty_Performance_Criteria_SV.pdf` | Generated SV variant PDF output |
 | `png/` | Generated PNG table images (one per mission area, 2x retina resolution) |
+| `png_SV/` | Generated PNG table images for SV variant |

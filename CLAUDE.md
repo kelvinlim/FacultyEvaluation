@@ -15,10 +15,16 @@ This project restructures the Dept of Psychiatry & Behavioral Sciences Faculty P
 - `build_aligned_criteria.py` — Main script that generates the Excel output. Contains formatting/styling logic using openpyxl.
 - `build_table_pngs.py` — Generates PNG table images (one per mission area) using Playwright to render styled HTML tables.
 - `build_png_powerpoint.py` — Generates a PowerPoint deck with one PNG table image per slide.
+- `build_sv_pdf.py` — Generates the SV variant PDF: combines docx cover pages (intro + flowchart) with PNG tables from an alternate Excel workbook into a single portrait PDF with footers.
+- `convert_numbers_to_xlsx.py` — Converts Apple Numbers files to Excel (.xlsx) format.
 - `Faculty_Performance_Criteria_Source_2026-03-01.docx` — Original source document.
+- `Dept of Psychiatry & Behav Sciences_ Faculty Performance Criteria_03.01.26.docx` — Alternate source document used for SV PDF cover pages.
 - `Faculty_Performance_Criteria_Aligned.xlsx` — Primary output file (landscape, UMN branding).
+- `Faculty_Performance_Criteria_SV.pdf` — SV variant PDF output (portrait, with docx cover + table PNGs).
 - `Faculty_Performance_Criteria_PNGs.pptx` — Generated PowerPoint deck using the PNG table outputs.
+- `Clinical criteria_input_SV.xlsx` — Alternate criteria workbook (converted from Numbers) used by the SV PDF builder.
 - `png/` — Directory of generated PNG table images (2x retina resolution).
+- `png_SV/` — Directory of generated PNG table images for the SV variant.
 
 ## Build & Run
 
@@ -41,6 +47,13 @@ python build_table_pngs.py
 
 # Regenerate PowerPoint from PNG table images
 python build_png_powerpoint.py
+
+# Convert Apple Numbers to Excel
+python convert_numbers_to_xlsx.py "Clinical criteria_input_SV.numbers"
+
+# Generate the SV variant PDF (cover pages + table PNGs)
+python build_sv_pdf.py
+python build_sv_pdf.py --input other.xlsx --docx other.docx --date "April 1, 2026"
 ```
 
 Scripts are executable and can also be run directly (for example, `./build_table_pngs.py`).
